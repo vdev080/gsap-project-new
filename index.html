@@ -1,0 +1,195 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Duplicate Project</title>
+<link rel="stylesheet" href="css/style.css">
+</head>
+<body>
+<section class="custom-running-text-section relative">
+  <div class="custom-running-content ">
+    <h1>Welcome to Gsap Animation</h1>
+  </div>
+</section>
+<section class="custom-image-bubbles relative">
+  <div class="custom-content-wrapper relative sticky">
+    <img id="custom-bubble1" src="img/bb.webp" alt="">
+    <img id="custom-bubble2" src="img/bb.webp" alt="">
+    <div class="custom-lottie-Animation"></div>
+    <img id="custom-bubble3" src="img/bb.webp" alt="">
+    <img id="custom-bubble4" src="img/bb.webp" alt="">
+  </div>
+</section>
+<section class="custom-image-grid">
+  <div class="custom-content">
+    <div class="custom-container">
+      <div class="custom-heading-box">
+        <h2>Gallery</h2>
+      </div>
+      <div class="custom-img-container">
+        <div class="custom-img-block">
+          <div class="custom-img-box">
+            <img src="img/pexels-nardo-3574678.jpg" alt="">
+          </div>
+          <div class="custom-img-box">
+            <img src="img/pexels-nardo-3574678.jpg" alt="">
+          </div>
+          <div class="custom-img-box">
+            <img src="img/pexels-nardo-3574678.jpg" alt="">
+          </div>
+        </div>
+        <div class="custom-img-block">
+          <div class="custom-img-box">
+            <img src="img/pexels-nardo-3574678.jpg" alt="">
+          </div>
+          <div class="custom-img-box">
+            <img src="img/pexels-nardo-3574678.jpg" alt="">
+          </div>
+          <div class="custom-img-box">
+            <img src="img/pexels-nardo-3574678.jpg" alt="">
+          </div>
+        </div>
+        <div class="custom-img-block">
+          <div class="custom-img-box">
+            <img src="img/pexels-nardo-3574678.jpg" alt="">
+          </div>
+          <div class="custom-img-box">
+            <img src="img/pexels-nardo-3574678.jpg" alt="">
+          </div>
+          <div class="custom-img-box">
+            <img src="img/pexels-nardo-3574678.jpg" alt="">
+          </div>
+        </div>
+        <div class="custom-img-block">
+          <div class="custom-img-box">
+            <img src="img/pexels-nardo-3574678.jpg" alt="">
+          </div>
+          <div class="custom-img-box">
+            <img src="img/pexels-nardo-3574678.jpg" alt="">
+          </div>
+          <div class="custom-img-box">
+            <img src="img/pexels-nardo-3574678.jpg" alt="">
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+<section class="custom-end-section">
+  <h3>Animation Ending</h3>
+</section>
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/bodymovin/5.7.8/lottie.min.js"></script>
+<script src="https://unpkg.com/@lottiefiles/lottie-player@latest/dist/lottie-player.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/gsap@3.12.5/dist/gsap.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/gsap@3.12.5/dist/ScrollTrigger.min.js"></script>
+
+<script>
+  const runningText = document.querySelector(".custom-running-content");
+
+  function getScrollAmount() {
+    let runningWidth = runningText.scrollWidth;
+    return -(runningWidth + window.innerWidth);
+  }
+
+  const tween = gsap.to(runningText, {
+    x: getScrollAmount(),
+    duration: 3,
+    ease: "none"
+  });
+
+  ScrollTrigger.create({
+    trigger: ".custom-running-text-section",
+    start: "top top",
+    end: () => `+=${getScrollAmount() * -1}`,
+    pin: true,
+    animation: tween,
+    scrub: 1,
+    invalidateOnRefresh: true,
+  });
+
+  const runningLottie = lottie.loadAnimation({
+    container: document.querySelector(".custom-lottie-Animation"),
+    renderer: "svg",
+    loop: true,
+    autoplay: false,
+    path: "img/lottie.json",
+  });
+
+  ScrollTrigger.create({
+    trigger: ".custom-image-bubbles",
+    start: "top 0%",
+    end: "bottom -350%",
+    scrub: 1,
+    onUpdate: (self) => {
+      const progress = self.progress;
+      runningLottie.goToAndStop(progress * runningLottie.totalFrames, true);
+    },
+    ease: "power1.inOut",
+  });
+
+  let bubblesTimeline = gsap.timeline({
+    scrollTrigger: {
+      trigger: ".custom-image-bubbles",
+      start: "top 0%",
+      end: "bottom 50%",
+      scrub: 1,
+      duration: 1,
+      pause: true
+    },
+  });
+
+  bubblesTimeline.to("#custom-bubble1", {
+    top: "-10rem",
+    left: "-25rem",
+    repeat: 4,
+    duration: 2,
+  }, "bubble");
+
+  bubblesTimeline.to("#custom-bubble2", {
+    top: "-10rem",
+    left: "unset",
+    right: "-25rem",
+    repeat: 4,
+    duration: 2,
+  }, "bubble");
+
+  bubblesTimeline.to("#custom-bubble3", {
+    bottom: "-12rem",
+    left: "-25rem",
+    top: "unset",
+    repeat: 4,
+    duration: 2,
+  }, "bubble");
+
+  bubblesTimeline.to("#custom-bubble4", {
+    bottom: "-12rem",
+    right: "-25rem",
+    left: "unset",
+    top: "unset",
+    repeat: 4,
+    duration: 2,
+  }, "bubble");
+
+  let ImageGridTimeline = gsap.timeline({
+    scrollTrigger: {
+      trigger: ".custom-image-grid",
+      start: "0% 0%",
+      end: "50% 0%",
+      scrub: 1,
+      pause: true
+    },
+  });
+
+  document.querySelectorAll(".custom-img-block").forEach((imgBlock, i) => {
+    let height = imgBlock.offsetHeight;
+    ImageGridTimeline.to(imgBlock, {
+      y: -height * i,
+      duration: 1,
+      stagger: 1
+    });
+  });
+</script>
+</body>
+</html>
